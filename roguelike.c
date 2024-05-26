@@ -197,7 +197,7 @@ int main() {
     int totalCoins = 0; // 총 획득한 동전 수
 
     // 맵 중복 선택 방지를 위한 배열
-    int usedMaps[NUM_MAPS] = {0};
+    int usedMaps[NUM_MAPS] = { 0 };
 
     for (int stage = 0; stage < STAGES; ++stage) {
         int mapIndex;

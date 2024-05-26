@@ -1,4 +1,4 @@
-#define _CRT_SECURE_NO_WARNINGS
+    #define _CRT_SECURE_NO_WARNINGS
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -317,7 +317,10 @@ void hideCursor() {
 }
 
 void setCursorPosition(int x, int y) {
-    printf("\033[%d;%dH", y + 1, x + 1);
+    COORD coord;
+    coord.X = x;
+    coord.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
 void printMap(Map* map, int playerX, int playerY) {
@@ -378,12 +381,36 @@ void gameCompleteScreen(int coins) {
     printf("             게임 완료             \n");
     printf("========================================\n");
     printf("축하합니다! 모든 단계를 완료했습니다.\n");
-    printf("총 획득한 동전: %d\n", coins);
+    // printf("총 획득한 동전: %d\n", coins);
+
+    setCursorPosition(17, 11); // (18, 12)
+    printf(" P");
+    setCursorPosition(17, 6);  // (18, 7)
+    printf(" A");
+
+    fflush(stdout);
+    Sleep(1000); // 1초 대기
+
+    // 반복문을 사용하여 A를 아래로 이동
+    for (int i = 6; i < 11; i++) {
+        setCursorPosition(17, i);  // 이전 위치를 지움
+        printf("  ");
+        setCursorPosition(17, i + 1);  // 새로운 위치에 A를 출력
+        printf(" A");
+        fflush(stdout);
+        Sleep(1000); // 1초 대기
+    }
+
+    setCursorPosition(0, 13); // (1, 14)
+    printf("당신은 족보를 얻었습니다. 시험 힘내세요!\n");
     printf("========================================\n");
     printf("나가려면 아무 키나 누르세요...\n");
-    _getch();
+
+    fflush(stdout);
+    _getch(); // 키 입력 대기
     exit(0);
 }
+
 
 void gameStartScreen() {
     clearScreen();
